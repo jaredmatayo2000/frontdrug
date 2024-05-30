@@ -1,33 +1,33 @@
 import http from "../http-common";
 
-class DrugDataService {
+class LandDataService {
   getAll() {
-    return http.get("/drugs");
+    return http.get("/lands");
   }
 
   get(id) {
-    return http.get(`/drug/${id}`);
+    return http.get(`/land/${id}`);
   }
 
   create(data) {
-    return http.post("/drug", data);
+    return http.post("/land", data);
   }
 
   update(id, data) {
-    return http.put(`/drug/${id}`, data);
+    return http.put(`/land/${id}`, data);
 }
 
 delete(id) {
-  return http.delete(`/drug/${id}`);
+  return http.delete(`/land/${id}`);
 }
 
 deleteAll() {
-  return http.delete(`/drug`);
+  return http.delete(`/land`);
 }
 
 findByTitle(title) {
-  return http.get(`/drug?title=${title}`);
+  return http.get(`/land?title=${title}`);
 }
 }
 
-export default new DrugDataService();
+export default new LandDataService();
