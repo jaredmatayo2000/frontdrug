@@ -1,41 +1,41 @@
 import React, { Component } from "react";
-import DrugDataService from "./services/drug.service";
+import LandDataService from "./services/land.service";
 import { Link } from "react-router-dom";
 
-export default class DrugsList extends Component {
+export default class LandsList extends Component {
   constructor(props) {
     super(props);
     this.onChangeSearchName = this.onChangeSearchName.bind(this);
-    this.retrieveDrugs = this.retrieveDrugs.bind(this);
+    this.retrieveLands = this.retrieveLands.bind(this);
     this.refreshList = this.refreshList.bind(this);
-    this.setActiveDrug = this.setActiveDrug.bind(this);
-    this.removeAllDrugs = this.removeAllDrugs.bind(this);
-    this.searchName = this.searchName.bind(this);
+    this.setActiveLand = this.setActiveDrug.bind(this);
+    this.removeAllLands = this.removeAllLands.bind(this);
+    this.searchTitle = this.searchTitle.bind(this);
 
     this.state = {
-      drugs: [],
-      currentDrug: null,
+      lands: [],
+      currentLand: null,
       currentIndex: -1,
-      searchName: ""
+      searchTitle: ""
     };
   }
   componentDidMount() {
-    this.retrieveDrugs();
+    this.retrieveLands();
   }
 
-  onChangeSearchName(e) {
-    const searchName = e.target.value;
+  onChangeSearchTitle(e) {
+    const searchTitle = e.target.value;
 
     this.setState({
-      searchName: searchName
+      searchTitle: searchTitle
     });
   }
 
-  retrieveDrugs() {
-    DrugDataService.getAll()
+  retrieveLands() {
+    LandDataService.getAll()
       .then(response => {
         this.setState({
-          drugs: response.data
+          lands: response.data
         });
         console.log(response.data);
       })
@@ -47,19 +47,19 @@ export default class DrugsList extends Component {
   refreshList() {
     this.retrieveDrugs();
     this.setState({
-      currentDrug: null,
+      currentLand: null,
       currentIndex: -1
     });
   }
 
-  setActiveDrug(drug, index) {
+  setActiveLand(land, index) {
     this.setState({
-      currentDrug: drug,
+      currentLand: land,
       currentIndex: index
     });
   }
-  removeAllDrugs() {
-    DrugDataService.deleteAll()
+  removeAllLands() {
+    LandDataService.deleteAll()
       .then(response => {
         console.log(response.data);
         this.refreshList();
@@ -69,11 +69,11 @@ export default class DrugsList extends Component {
       });
   }
 
-  searchName() {
-    DrugDataService.findByTitle(this.state.searchName)
+  searchTitle() {
+    LandDataService.findByTitle(this.state.searchTitle)
       .then(response => {
         this.setState({
-          drugs: response.data
+          lands: response.data
         });
         console.log(response.data);
       })
@@ -82,7 +82,7 @@ export default class DrugsList extends Component {
       });
   }
   render() {
-    const { searchName, drugs, currentDrug, currentIndex } = this.state;
+    const { searchTitle, lands, currentland, currentIndex } = this.state;
 
     return (
       <div className="list row">
@@ -91,15 +91,15 @@ export default class DrugsList extends Component {
             <input
               type="text"
               className="form-control"
-              placeholder="Search by name"
-              value={searchName}
-              onChange={this.onChangeSearchName}
+              placeholder="Search by title"
+              value={searchTitle}
+              onChange={this.onChangeSearchTitle}
             />
             <div className="input-group-append">
               <button
                 className="btn btn-outline-secondary m-2"
                 type="button"
-                onClick={this.searchName}
+                onClick={this.searchTitle}
               >
                 Search
               </button>
@@ -107,28 +107,28 @@ export default class DrugsList extends Component {
           </div>
         </div>
         <div className="col-md-6">
-          <h4>Drugs available</h4>
+          <h4>Lands available</h4>
 
 
 
 
 
            <div>
-            {drugs &&
-              drugs.map((drug, index) => (
+            {lands &&
+              lands.map((drug, index) => (
                 <div className="card m-2" style={{with:"0rem"}}>
                 
                     
                 <h2 className="card-title m-2" > 
-                 {drug.name} 
+                 {land.title} 
                  </h2>
                 <h5 className="price m-2" style={{color:"blue"}}>
-                  (Kshs.{drug.price})
+                  (Kshs.{land.price})
                   </h5>
                 
                 
 
-                <p className="description m-2" >{drug.description}</p>
+                <p className="description m-2" >{land.description}</p>
                 <hr className="break"/>
                 <button
             className=" m-1 btn btn-sm btn-primary"
@@ -143,7 +143,7 @@ export default class DrugsList extends Component {
 
           <button
             className="m-3 btn btn-sm btn-danger"
-            onClick={this.removeAllDrugs}
+            onClick={this.removeAllLands}
           >
             Remove All
           </button>
@@ -152,25 +152,25 @@ export default class DrugsList extends Component {
 
         </div>
         <div className="col-md-6">
-          {currentDrug ? (
+          {currentLand ? (
             <div>
-              <h4>Drug</h4>
+              <h4>Land</h4>
               <div>
                 <label>
-                  <strong>Name:</strong>
+                  <strong>TITLE:</strong>
                 </label>{" "}
-                {currentDrug.name}
+                {currentDrug.title}
               </div>
               <div>
                 <label>
                   <strong>Description:</strong>
                 </label>{" "}
-                {currentDrug.description}
+                {currentLand.description}
               </div>
               
 
               <Link
-                to={"/drugs/" + currentDrug.id}
+                to={"/lands/" + currentLand.id}
                 className="badge badge-warning"
               >
                 Edit
@@ -179,7 +179,7 @@ export default class DrugsList extends Component {
           ) : (
             <div>
               <br />
-              <p>Please click on a drug to edit...</p>
+              <p>Please click on a land to edit...</p>
             </div>
           )}
         </div>
