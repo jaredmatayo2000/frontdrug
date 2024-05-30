@@ -1,29 +1,31 @@
 import React, { Component } from "react";
-import DrugDataService from "./services/drug.service";
+import LandDataService from "./services/land.service";
 
-export default class AddDrug extends Component {
+export default class AddLand extends Component {
   constructor(props) {
     super(props);
-    this.onChangeName = this.onChangeName.bind(this);
+    this.onChangeTitle = this.onChangeName.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangePrice=this.onChangePrice.bind(this);
+    this.onChangeLocation=this.onChangeLocation.bind(this);
     
-    this.saveDrug = this.saveDrug.bind(this);
-    this.newDrug = this.newDrug.bind(this);
+    this.saveLand = this.saveLand.bind(this);
+    this.newLand = this.newLand.bind(this);
 
     this.state = {
       id: null,
-      name: "",
+      title: "",
       description: "", 
       price :"",
+      location :"",
       
       submitted: false
     };
 }
 
-onChangeName(e) {
+onChangeTitle(e) {
   this.setState({
-    name: e.target.value
+    title: e.target.value
   });
 }
 
@@ -38,21 +40,27 @@ onChangePrice(e) {
     price: e.target.value
   });
 }
+onChangeLocation(e) {
+  this.setState({
+    location: e.target.value
+  });
+}
 
-
-saveDrug() {
+saveLand() {
   var data = {
-    name: this.state.title,
+    title: this.state.title,
     description: this.state.description,
-    price: this.state.price
+    price: this.state.price,
+      location: this.state.location
   };
-  DrugDataService.create(data)
+  LandDataService.create(data)
       .then(response => {
         this.setState({
           id: response.data.id,
-          name: response.data.name,
+          title: response.data.title,
           description: response.data.description,
           price: response.data.price,
+          location: response.data.location,
           submitted: true
         });
         console.log(response.data);
@@ -61,12 +69,13 @@ saveDrug() {
         console.log(e);
       });
     }
-    newTutorial() {
+    newLand() {
         this.setState({
           id: null,
-          name: "",
+          title: "",
           description: "",
           price: "",
+          location: "",
           
     
           submitted: false
@@ -79,23 +88,23 @@ saveDrug() {
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
-            <button className="btn btn-success" onClick={this.newTutorial}>
+            <button className="btn btn-success" onClick={this.newLand}>
               Add
             </button>
           </div>
         ) : (
           <div>
             <div className="form-group">
-              <h2 className="heading">Add Drug</h2>
-              <label htmlFor="title">Name</label>
+              <h2 className="heading">Add Land</h2>
+              <label htmlFor="title">Title</label>
               <input
                 type="text"
                 className="form-control"
-                id="name"
+                id="title"
                 required
-                value={this.state.name}
-                onChange={this.onChangeName}
-                name="name"
+                value={this.state.title}
+                onChange={this.onChangeTitle}
+                name="title"
               />
               </div>
 
@@ -125,8 +134,21 @@ saveDrug() {
   />
 </div>
 
+      <div className="form-group">
+  <label htmlFor="location">Location</label>
+  <input
+    type="text"
+    className="form-control"
+    id="location"
+    required
+    value={this.state.location}
+    onChange={this.onChangeLocation}
+    name="location"
+  />
+</div>
 
-<button onClick={this.saveDrug} className="btn btn-success">
+
+<button onClick={this.saveLand} className="btn btn-success">
   Submit
 </button>
 </div>
